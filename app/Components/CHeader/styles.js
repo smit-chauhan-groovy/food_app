@@ -3,16 +3,11 @@ import BaseColor from '../../Config/colors';
 
 const styles = StyleSheet.create({
   mainContainer: {
-    backgroundColor: BaseColor.primary,
-    height: 60,
-    paddingHorizontal: 20,
-  },
-  iconContainer: {
-    paddingVertical: 5,
-    height: '100%',
-    alignItems: 'center',
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
+    height: 70,
+    width: '100%',
   },
 });
 

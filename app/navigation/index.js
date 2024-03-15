@@ -1,6 +1,6 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React from 'react';
-import {Text, View} from 'react-native';
+import React, {useEffect} from 'react';
+import {PermissionsAndroid, Platform, Text, View} from 'react-native';
 import BottomTabs from './BottomTabs';
 import Home from '../screens/Home';
 import History from '../screens/History';
@@ -12,8 +12,13 @@ import {
   createStackNavigator,
 } from '@react-navigation/stack';
 import BaseColor from '../Config/colors';
+import DeviceInfo from 'react-native-device-info';
 
 const NavigatingStart = () => {
+  useEffect(() => {
+    userPermissionForNotifications();
+  }, []);
+
   const DashboardBottomTabs = () => {
     const Tab = createBottomTabNavigator();
 
@@ -78,6 +83,34 @@ const NavigatingStart = () => {
         />
       </Stack.Navigator>
     );
+  };
+
+  const userPermissionForNotifications = async () => {
+    const androidVersion = await DeviceInfo.getApiLevel();
+    if (Platform.OS === 'android' && androidVersion >= 33) {
+      setTimeout(async () => {
+        try {
+          const granted = await PermissionsAndroid.request(
+            'android.permission.POST_NOTIFICATIONS',
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log('Notification permission granted');
+          } else {
+            console.log('Notification permission denied');
+          }
+        } catch (err) {
+          console.log('err======>>>>>', err);
+        }
+      }, 600);
+    } else {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      if (enabled) {
+        console.log('Authorization status:', authStatus);
+      }
+    }
   };
 
   return (
