@@ -1,5 +1,13 @@
 import React, {useRef} from 'react';
-import {Text, View, Animated, TouchableOpacity, Dimensions} from 'react-native';
+import {
+  Text,
+  View,
+  Animated,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+} from 'react-native';
+import Carousel from 'react-native-reanimated-carousel';
 
 const Home = () => {
   const translateXRef = useRef(new Animated.Value(0)).current;
@@ -96,13 +104,22 @@ const Home = () => {
     ]).start();
   };
 
+  const images = [
+    'https://media.istockphoto.com/id/1476198147/photo/colors-catalogue.webp?b=1&s=170667a&w=0&k=20&c=SXQLDsZ3DZmGx0go3CTYjmR_6z2PDN5pqLSER-oyWRY=',
+
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWTMYxzeubsZoEECBMdj3RakSB2BPenhN0jZJU-Njzug&s',
+
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSCTuNdmmptX_v0aR0ZBqVfo7aF7ENs_KW4WlOUpVcdQ&s',
+  ];
+
   // useEffect(() => {
   //   startAnimation();
   // }, []);
 
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Animated.View
+      {/* // animation */}
+      {/* <Animated.View
         style={{
           alignItems: 'center',
           justifyContent: 'center',
@@ -148,7 +165,30 @@ const Home = () => {
           }}>
           <Text style={{color: 'white'}}>Start</Text>
         </TouchableOpacity>
-      </Animated.View>
+      </Animated.View> */}
+      <Carousel
+        loop
+        mode="parallax"
+        width={Dimensions.get('window').width / 1}
+        height={Dimensions.get('window').width / 1}
+        autoPlay={false}
+        data={[...images]}
+        scrollAnimationDuration={1000}
+        onSnapToItem={index => console.log('current index:', index)}
+        renderItem={({index, item}) => (
+          <View
+            style={{
+              flex: 1,
+              borderWidth: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={{uri: `${item}`}}
+              style={{width: '90%', height: '100%'}}></Image>
+          </View>
+        )}
+      />
     </View>
   );
 };
